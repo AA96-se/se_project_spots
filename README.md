@@ -38,18 +38,12 @@ Spots is an image sharing platform inspired by Instagram. Users can upload, view
 
 ## Tech Stack
 
-- Frontend: HTML, CSS, JavaScript (or your chosen framework)
-- Backend: (e.g., Node.js, Django, Ruby on Rails)
-- Database: (e.g., MongoDB, PostgreSQL)
+- HTML, CSS, Responsive Design
 
-## Getting Started
+## Deployment
 
-1. Clone this repo
-2. Install dependencies (`npm install` or equivalent)
-3. Set up your environment variables (e.g., database URL, API keys)
-4. Run the development server (`npm start` or equivalent)
-5. Open `http://localhost:3000` in your browser
+This webpage is deployed to GitHub pages
 
-## Contributing
+- Deployment Link:
 
-Feel free to submit issues or pull requests. Please follow the code style and write clear commit messages.
+https://aa96-se.github.io/se_project_spots/
