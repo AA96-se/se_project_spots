@@ -70,11 +70,13 @@
   background-color: #212121;
   color: white;
   border: transparent;
-  border-radius: 5%;
-  max-width: 149px;
+  border-radius: 8px;
+  max-width: 157px;
+  width: 100%;
   max-height: 52px;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 5px;
   padding: 8px 14px;
   font-size: 16px;
