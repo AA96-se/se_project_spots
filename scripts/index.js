@@ -48,6 +48,8 @@ const newPostImgCaptionInput = newPostModal.querySelector(
   "#card-caption-input"
 );
 
+const newPostFormEl = newPostModal.querySelector(".modal__form");
+
 const profileNameEl = document.querySelector(".profile__name");
 const profileDescriptionEl = document.querySelector(".profile__description");
 
@@ -88,7 +90,7 @@ function handleAddCardSubmit(evt) {
   newPostModal.classList.remove("modal_is-opened");
 }
 // Create the submit listener.
-editProfileFormEl.addEventListener("submit", handleAddCardSubmit);
+newPostFormEl.addEventListener("submit", handleAddCardSubmit);
 
 initialCards.forEach(function (card) {
   console.log(card.name);
