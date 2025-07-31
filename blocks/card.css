@@ -21,6 +21,10 @@
   opacity: 40%;
 }
 
+.card__like-button_active {
+  background-image: url(../images/redLikeBtn.svg);
+}
+
 .card__like-button:hover {
   opacity: 100%;
 }
