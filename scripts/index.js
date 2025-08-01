@@ -1,5 +1,10 @@
 const initialCards = [
   {
+    name: "Golden Gate Bridge",
+    link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/spots/7-photo-by-griffin-wooldridge-from-pexels.jpg",
+  },
+
+  {
     name: "Val Thorens",
     link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/spots/1-photo-by-moritz-feldmann-from-pexels.jpg",
   },
@@ -53,6 +58,13 @@ const newPostFormEl = newPostModal.querySelector(".modal__form");
 const profileNameEl = document.querySelector(".profile__name");
 const profileDescriptionEl = document.querySelector(".profile__description");
 
+const previewModal = document.querySelector("#preview-modal");
+const previewModalCloseBtn = previewModal.querySelector(
+  ".modal__close-btn_type_preview"
+);
+const previewImageEl = previewModal.querySelector(".modal__image");
+const previewImageCaptionEl = previewModal.querySelector(".modal__caption");
+
 const cardTemplate = document
   .querySelector("#card-template")
   .content.querySelector(".card");
@@ -74,9 +86,14 @@ function getCardElement(data) {
 
   const cardDeleteBtnEl = cardElement.querySelector(".card__delete-button");
   cardDeleteBtnEl.addEventListener("click", () => {
-    //cardDeleteBtnEl.closest(".card").remove();
     cardElement.remove();
     cardElement = null;
+  });
+
+  cardImageEl.addEventListener("click", () => {
+    previewImageEl.src = data.link;
+    previewImageEl.alt = data.name;
+    openModal(previewModal);
   });
 
   return cardElement;
@@ -94,23 +111,23 @@ function closeModal(modal) {
 editProfileBtn.addEventListener("click", function () {
   editProfileNameInput.value = profileNameEl.textContent;
   editProfileDescriptionInput.value = profileDescriptionEl.textContent;
-  //editProfileModal.classList.add("modal_is-opened");
   openModal(editProfileModal);
 });
 
 editProfileCloseBtn.addEventListener("click", function () {
-  //editProfileModal.classList.remove("modal_is-opened");
   closeModal(editProfileModal);
+});
+
+previewModalCloseBtn.addEventListener("click", function () {
+  closeModal(previewModal);
 });
 
 //New Post button functionality
 newPostBtn.addEventListener("click", function () {
-  // newPostModal.classList.add("modal_is-opened");
   openModal(newPostModal);
 });
 
 newPostCloseBtn.addEventListener("click", function () {
-  //newPostModal.classList.remove("modal_is-opened");
   closeModal(newPostModal);
 });
 
@@ -119,7 +136,6 @@ function handleProfileFormSubmit(evt) {
 
   profileNameEl.textContent = editProfileNameInput.value;
   profileDescriptionEl.textContent = editProfileDescriptionInput.value;
-  //editProfileModal.classList.remove("modal_is-opened");
   closeModal(editProfileModal);
 }
 
@@ -135,7 +151,6 @@ function handleAddCardSubmit(evt) {
   const cardElement = getCardElement(inputValues);
 
   cardsList.prepend(cardElement);
-  //newPostModal.classList.remove("modal_is-opened");
   closeModal(newPostModal);
 }
 // Create the submit listener.
