@@ -149,12 +149,15 @@
 
 .modal__caption {
   color: white;
+  background-color: #212121;
+  display: inline-block;
+  border-radius: 4px;
 }
 
 @media screen and (max-width: 627px) {
   .modal__container {
     width: 100%;
-    padding: 24px 12px;
+    padding: 12px 12px;
     overflow: hidden;
   }
 
