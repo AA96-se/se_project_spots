@@ -151,7 +151,8 @@
   color: white;
   background-color: #212121;
   display: inline-block;
-  border-radius: 4px;
+  border-radius: 8px;
+  padding: 4px 8px;
 }
 
 @media screen and (max-width: 627px) {
