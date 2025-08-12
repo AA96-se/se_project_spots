@@ -34,6 +34,7 @@ const initialCards = [
   },
 ];
 
+// Profile elements
 const editProfileBtn = document.querySelector(".profile__edit-button");
 const editProfileModal = document.querySelector("#edit-profile-modal");
 const editProfileCloseBtn = editProfileModal.querySelector(".modal__close-btn");
@@ -44,20 +45,23 @@ const editProfileNameInput = editProfileModal.querySelector(
 const editProfileDescriptionInput = editProfileModal.querySelector(
   "#profile-description-input"
 );
+const profileNameEl = document.querySelector(".profile__name");
+const profileDescriptionEl = document.querySelector(".profile__description");
 
+// New Post elements
 const newPostBtn = document.querySelector(".profile__add-button");
 const newPostModal = document.querySelector("#new-post-modal");
+// working here   vvvvv
+const newPostSubmitBtn = newPostModal.querySelector(".modal__button");
+
 const newPostCloseBtn = newPostModal.querySelector(".modal__close-btn");
 const newPostImgLinkInput = newPostModal.querySelector("#card-image-input");
 const newPostImgCaptionInput = newPostModal.querySelector(
   "#card-caption-input"
 );
-
 const newPostFormEl = newPostModal.querySelector(".modal__form");
 
-const profileNameEl = document.querySelector(".profile__name");
-const profileDescriptionEl = document.querySelector(".profile__description");
-
+// Preview Modal elements
 const previewModal = document.querySelector("#preview-modal");
 const previewModalCloseBtn = previewModal.querySelector(
   ".modal__close-btn_type_preview"
@@ -65,6 +69,7 @@ const previewModalCloseBtn = previewModal.querySelector(
 const previewImageEl = previewModal.querySelector(".modal__image");
 const previewImageCaptionEl = previewModal.querySelector(".modal__caption");
 
+// Card related elements
 const cardTemplate = document
   .querySelector("#card-template")
   .content.querySelector(".card");
@@ -104,6 +109,14 @@ function openModal(modal) {
 
 function closeModal(modal) {
   modal.classList.remove("modal_is-opened");
+  //added to remove error msg on modal reset
+  const formEl = modal.querySelector(".modal__form");
+  if (formEl) {
+    const inputList = Array.from(formEl.querySelectorAll(".modal__input"));
+    inputList.forEach((input) => {
+      hideInputError(formEl, input);
+    });
+  }
 }
 
 //edit profile button functionality
@@ -142,14 +155,14 @@ editProfileFormEl.addEventListener("submit", handleProfileFormSubmit);
 
 function handleAddCardSubmit(evt) {
   evt.preventDefault();
-
   const inputValues = {
     name: newPostImgCaptionInput.value,
     link: newPostImgLinkInput.value,
   };
   const cardElement = getCardElement(inputValues);
-
   cardsList.prepend(cardElement);
+  evt.target.reset();
+  disableButton(newPostSubmitBtn);
   closeModal(newPostModal);
 }
 // Create the submit listener.
@@ -158,4 +171,23 @@ newPostFormEl.addEventListener("submit", handleAddCardSubmit);
 initialCards.forEach(function (item) {
   const cardElement = getCardElement(item);
   cardsList.append(cardElement);
+});
+
+document.addEventListener("keydown", (evt) => {
+  if (evt.key === "Escape") {
+    const openModal = document.querySelector(".modal.modal_is-opened");
+    if (openModal) {
+      closeModal(openModal);
+    }
+  }
+});
+
+const allModals = document.querySelectorAll(".modal");
+
+allModals.forEach((modal) => {
+  modal.addEventListener("mousedown", (evt) => {
+    if (evt.target.classList.contains("modal")) {
+      closeModal(modal);
+    }
+  });
 });

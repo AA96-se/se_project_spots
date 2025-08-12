@@ -150,6 +150,16 @@
   opacity: 80%;
 }
 
+.modal__submit-btn_disabled {
+  background-color: rgba(33, 33, 33, 1);
+  color: white;
+  opacity: 50%;
+}
+
+.modal__submit-btn_disabled:hover {
+  opacity: 50%;
+}
+
 .modal__image {
   max-width: 80vw;
   max-height: 80vh;
