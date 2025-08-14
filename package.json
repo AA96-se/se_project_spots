@@ -1,0 +1,20 @@
+{
+  "name": "spots project",
+  "version": "1.0.0",
+  "description": "npm for spots project",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AA96-se/se_project_spots.git"
+  },
+  "author": "Angel Armas",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AA96-se/se_project_spots/issues"
+  },
+  "homepage": "https://github.com/AA96-se/se_project_spots#readme"
+}
