@@ -15,16 +15,12 @@
   <body>
     <div class="page">
       <header class="header">
-        <img
-          src="<%=require('./images/Logo.svg')%>"
-          alt="Spot Logo"
-          class="header__logo"
-        />
+        <img src="./images/Logo.svg" alt="Spot Logo" class="header__logo" />
       </header>
       <main class="content">
         <section class="profile page__section">
           <img
-            src="<%=require('./images/avatar.jpg')%>"
+            src="./images/avatar.jpg"
             alt="Bessie Coleman"
             class="profile__avatar"
           />
@@ -32,17 +28,12 @@
             <h1 class="profile__name">Bessie Coleman</h1>
             <p class="profile__description">Civil Aviator</p>
             <button type="button" class="profile__edit-button">
-              <img
-                src="<%=require('./images/pencil-icon.svg')%>"
-                alt="Pencil icon"
-              />Edit Profile
+              <img src="./images/pencil-icon.svg" alt="Pencil icon" />Edit
+              Profile
             </button>
           </div>
           <button type="button" class="profile__add-button">
-            <img
-              src="<%=require('./images/plus-icon.svg')%>"
-              alt="plus icon"
-            />New Post
+            <img src="./images/plus-icon.svg" alt="plus icon" />New Post
           </button>
         </section>
         <section class="cards page__section">
@@ -50,11 +41,7 @@
             <template id="card-template">
               <li class="card">
                 <button class="card__delete-button" type="button"></button>
-                <img
-                  src="<%=require('./images/trashIcon.svg')%>"
-                  alt=""
-                  class="card__image"
-                />
+                <img src="./images/trashIcon.svg" alt="" class="card__image" />
                 <div class="card__content">
                   <h2 class="card__title"></h2>
                   <button type="button" class="card__like-button"></button>
@@ -69,7 +56,7 @@
         <!--modal_is-opened-->
         <div class="modal__container">
           <button type="button" class="modal__close-btn">
-            <img src="<%=require('./images/Close-Icon.svg')%>" alt="X" />
+            <img src="./images/Close-Icon.svg" alt="X" />
           </button>
           <h2 class="modal__title">Edit Profile</h2>
           <form class="modal__form" novalidate>
@@ -121,7 +108,7 @@
         <!--modal_is-opened-->
         <div class="modal__container">
           <button type="button" class="modal__close-btn">
-            <img src="<%=require('./images/Close-Icon.svg')%>" alt="X" />
+            <img src="./images/Close-Icon.svg" alt="X" />
           </button>
           <h2 class="modal__title">New Post</h2>
           <form class="modal__form" novalidate>
