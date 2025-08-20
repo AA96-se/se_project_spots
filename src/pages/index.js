@@ -1,5 +1,9 @@
 import "./index.css";
-import { enableValidation, settings } from "../scripts/validation.js";
+import {
+  enableValidation,
+  resetValidation,
+  settings,
+} from "../scripts/validation.js";
 
 // ----- Card data -----
 const initialCards = [
@@ -118,18 +122,12 @@ function closeModal(modal) {
   modal.classList.remove("modal_is-opened");
   document.removeEventListener("keydown", handleEscapeKey);
 
-  // Reset validation (using hideInputError from validation.js)
-  const formEl = modal.querySelector(".modal__form");
-  if (formEl) {
-    const inputList = Array.from(formEl.querySelectorAll(".modal__input"));
-    inputList.forEach((input) => {
-      // Use hideInputError from validation.js
-      const errorMsgEl = formEl.querySelector(
-        `#${input.id}${settings.errorClassSuffix}`
-      );
-      errorMsgEl.textContent = "";
-      input.classList.remove(settings.inputErrorClass);
-    });
+  // ✅ Only reset validation for the Edit Profile Modal
+  if (modal.id === "edit-profile-modal") {
+    const formEl = modal.querySelector(".modal__form");
+    if (formEl) {
+      resetValidation(formEl, settings);
+    }
   }
 }
 

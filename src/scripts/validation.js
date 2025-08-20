@@ -23,6 +23,21 @@ const hideInputError = (formEl, inputEl, config) => {
   inputEl.classList.remove(config.inputErrorClass);
 };
 
+export function resetValidation(formElement, config = settings) {
+  const inputList = Array.from(
+    formElement.querySelectorAll(config.inputSelector)
+  );
+  inputList.forEach((input) => {
+    hideInputError(formElement, input, config);
+  });
+
+  const buttonEl = formElement.querySelector(config.submitButtonSelector);
+  if (buttonEl) {
+    buttonEl.disabled = true;
+    buttonEl.classList.add(config.inactiveButtonClass);
+  }
+}
+
 const checkInputValidity = (formEl, inputEl, config) => {
   if (!inputEl.validity.valid) {
     showInputError(formEl, inputEl, inputEl.validationMessage, config);
@@ -75,5 +90,3 @@ export const enableValidation = (config) => {
     setEventListeners(formEl, config);
   });
 };
-
-enableValidation(settings);
