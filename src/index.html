@@ -154,6 +154,42 @@
             </button>
           </form>
         </div>
+
+        <!-- New Avatar Modal -->
+        <div class="modal" id="avatar-modal">
+          <div class="modal__container">
+            <button type="button" class="modal__close-btn">
+              <img src="<%=require('./images/Close-Icon.svg')%>" alt="X" />
+            </button>
+            <h2 class="modal__title">Update Avatar</h2>
+            <form class="modal__form" novalidate data-initial-text="Save">
+              <label for="avatar-link-input">
+                Avatar URL
+                <input
+                  id="avatar-link-input"
+                  type="url"
+                  class="modal__input"
+                  required
+                />
+                <span id="avatar-link-input-error" class="modal__error"></span>
+              </label>
+              <button type="submit" class="modal__submit-btn modal__button">
+                Save
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Delete Confirmation Modal -->
+        <div class="modal" id="delete-confirm-modal">
+          <div class="modal__container">
+            <h2 class="modal__title">Are you sure?</h2>
+            <button type="button" class="modal__confirm-btn modal__button">
+              Yes, delete
+            </button>
+            <button type="button" class="modal__close-btn">Cancel</button>
+          </div>
+        </div>
       </div>
     </div>
   </body>
