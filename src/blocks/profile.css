@@ -6,11 +6,68 @@
   border-bottom: 1px rgba(33, 33, 33, 0.4) solid;
 }
 
+/* ===== Avatar + full-image hover overlay (rounded, no spill) ===== */
+.profile__avatar-wrapper {
+  position: relative;
+  display: inline-block;
+  line-height: 0; /* remove inline gap around img */
+  overflow: hidden; /* clip overlay to image bounds */
+  border-radius: 5%; /* match avatar rounding */
+  height: 190px;
+  width: 190px;
+
+  /* spacing between avatar and the text column comes from the wrapper (flex child) */
+  margin-right: 20px;
+}
+
 .profile__avatar {
   height: 190px;
   width: 190px;
-  margin-right: 20px;
-  border-radius: 5%;
+  border-radius: 5%; /* consistent rounding with wrapper */
+  object-fit: cover;
+  display: block;
+  /* no margin here; margin must be on wrapper for flex spacing */
+}
+
+/* Full-cover overlay button (hidden by default).
+   Darkens the *entire* avatar and centers text + icon near the bottom. */
+.profile__avatar-edit-button {
+  position: absolute;
+  inset: 0; /* fill entire avatar area */
+
+  background: rgba(0, 0, 0, 0.65); /* darken full image */
+  color: #ffffff; /* white text */
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1;
+
+  border: none;
+  display: flex;
+  justify-content: center; /* center horizontally */
+  align-items: flex-end; /* stick content to bottom */
+  gap: 6px;
+  padding-bottom: 12px; /* 12px up from bottom edge */
+
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none; /* not clickable when hidden */
+  cursor: pointer;
+
+  border-radius: 5%; /* match avatar’s rounded corners */
+  z-index: 1;
+}
+
+/* Ensure the icon follows the text and is sized like your edit button icon */
+.profile__avatar-edit-button img {
+  width: 16px;
+  height: 16px;
+  order: 2; /* icon comes after the text */
+}
+
+/* ✅ Show overlay on hover for ALL breakpoints (desktop & mobile) */
+.profile__avatar-wrapper:hover .profile__avatar-edit-button {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .profile__column {
@@ -89,6 +146,7 @@
   opacity: 80%;
 }
 
+/* ===== Mobile layout ===== */
 @media screen and (max-width: 627px) {
   .profile {
     flex-direction: column;
@@ -98,10 +156,24 @@
     padding-top: 20px;
   }
 
-  .profile__avatar {
-    margin: 0 0 12px;
+  .profile__avatar-wrapper {
+    margin-right: 0; /* stacked layout: no horizontal gap needed */
     height: 80px;
     width: 80px;
+  }
+
+  .profile__avatar {
+    margin: 0 0 12px; /* vertical spacing below avatar when stacked */
+    height: 80px;
+    width: 80px;
+    border-radius: 5%;
+  }
+
+  /* Keep hover-only behavior on mobile; just tweak sizing */
+  .profile__avatar-edit-button {
+    font-size: 14px;
+    gap: 4px;
+    padding-bottom: 8px; /* slightly smaller padding for mobile */
   }
 
   .profile__name {

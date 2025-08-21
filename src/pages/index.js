@@ -1,6 +1,6 @@
 import "./index.css";
 import { enableValidation, settings } from "../scripts/validation.js";
-import Api from "../utils/Api.js";
+import Api from "../../utils/Api.js";
 
 // — Initialize API
 const api = new Api({
@@ -20,18 +20,19 @@ const editProfileBtn = document.querySelector(".profile__edit-button");
 const editProfileModal = document.querySelector("#edit-profile-modal");
 const editProfileFormEl = editProfileModal.querySelector(".modal__form");
 
-const avatarBtn = document.querySelector(".profile__avatar-edit-button"); // ADDED
-const avatarModal = document.querySelector("#avatar-modal"); // ADDED
-const avatarFormEl = avatarModal.querySelector(".modal__form"); // ADDED
+const avatarBtn = document.querySelector(".profile__avatar-edit-button"); // overlay/edit trigger
+const avatarModal = document.querySelector("#avatar-modal");
+const avatarFormEl = avatarModal.querySelector(".modal__form");
 
 const newPostBtn = document.querySelector(".profile__add-button");
 const newPostModal = document.querySelector("#new-post-modal");
 const newPostFormEl = newPostModal.querySelector(".modal__form");
 
-const deleteConfirmModal = document.querySelector("#delete-confirm-modal"); // ADDED
+const deleteConfirmModal = document.querySelector("#delete-confirm-modal");
 const deleteConfirmBtn = deleteConfirmModal.querySelector(
   ".modal__confirm-btn"
-); // ADDED
+);
+const deleteCancelBtn = deleteConfirmModal.querySelector(".modal__close-btn");
 
 const previewModal = document.querySelector("#preview-modal");
 const previewImageEl = previewModal.querySelector(".modal__image");
@@ -49,7 +50,7 @@ function handleSubmitButton(formEl, isLoading, text = "Saving...") {
     btn.textContent = text;
     btn.disabled = true;
   } else {
-    btn.textContent = formEl.dataset.initialText;
+    btn.textContent = formEl.dataset.initialText || "Save";
     btn.disabled = false;
   }
 }
@@ -60,33 +61,45 @@ function getCardElement(data) {
   const deleteButton = cardElement.querySelector(".card__delete-button");
   const img = cardElement.querySelector(".card__image");
   const title = cardElement.querySelector(".card__title");
+  const likeCountEl = cardElement.querySelector(".card__like-count"); // optional
 
   img.src = data.link;
   img.alt = data.name;
   title.textContent = data.name;
   cardElement.dataset.id = data._id;
 
+  // Initialize like state from server payload
+  if (data.isLiked) {
+    likeButton.classList.add("card__like-button_active");
+  }
+  if (likeCountEl) {
+    likeCountEl.textContent = Array.isArray(data.likes) ? data.likes.length : 0;
+  }
+
   likeButton.addEventListener("click", () => {
-    const action = likeButton.classList.contains("card__like-button_active")
-      ? api.unlikeCard(data._id)
-      : api.likeCard(data._id);
+    const isActive = likeButton.classList.contains("card__like-button_active");
+    const action = isActive ? api.unlikeCard(data._id) : api.likeCard(data._id);
 
     action
-      .then(() => likeButton.classList.toggle("card__like-button_active"))
+      .then((updated) => {
+        // Trust server response
+        if (updated.isLiked) {
+          likeButton.classList.add("card__like-button_active");
+        } else {
+          likeButton.classList.remove("card__like-button_active");
+        }
+        if (likeCountEl && Array.isArray(updated.likes)) {
+          likeCountEl.textContent = updated.likes.length;
+        }
+      })
       .catch(console.error);
   });
 
   deleteButton.addEventListener("click", () => {
     openModal(deleteConfirmModal);
-    deleteConfirmBtn.onclick = () => {
-      api
-        .deleteCard(data._id)
-        .then(() => {
-          cardElement.remove();
-          closeModal(deleteConfirmModal);
-        })
-        .catch(console.error);
-    };
+    // Store card ID for confirm handler
+    deleteConfirmModal.dataset.cardId = data._id;
+    deleteConfirmModal.dataset.cardElementId = data._id;
   });
 
   img.addEventListener("click", () => {
@@ -117,7 +130,11 @@ function closeModal(modal) {
 
 // — Event Listeners
 editProfileBtn.addEventListener("click", () => openModal(editProfileModal));
-avatarBtn.addEventListener("click", () => openModal(avatarModal)); // ADDED
+
+if (avatarBtn) {
+  // Desktop overlay button (and can be used on mobile too) → open avatar modal
+  avatarBtn.addEventListener("click", () => openModal(avatarModal));
+}
 
 editProfileFormEl.addEventListener("submit", (evt) => {
   evt.preventDefault();
@@ -145,6 +162,7 @@ avatarFormEl.addEventListener("submit", (evt) => {
     .then((res) => {
       profileAvatarEl.src = res.avatar;
       closeModal(avatarModal);
+      avatarFormEl.reset();
     })
     .catch(console.error)
     .finally(() => handleSubmitButton(avatarFormEl, false));
@@ -161,16 +179,54 @@ newPostFormEl.addEventListener("submit", (evt) => {
     .then((card) => {
       cardsList.prepend(getCardElement(card));
       closeModal(newPostModal);
+      newPostFormEl.reset();
     })
     .catch(console.error)
     .finally(() => handleSubmitButton(newPostFormEl, false));
 });
 
+newPostBtn.addEventListener("click", () => openModal(newPostModal));
+
+// Delete confirmation modal buttons
+deleteConfirmBtn.addEventListener("click", () => {
+  const cardId = deleteConfirmModal.dataset.cardId;
+  if (!cardId) return;
+
+  api
+    .deleteCard(cardId)
+    .then(() => {
+      // Remove card element from DOM
+      const cardToRemove = cardsList.querySelector(`[data-id="${cardId}"]`);
+      if (cardToRemove) cardToRemove.remove();
+
+      closeModal(deleteConfirmModal);
+    })
+    .catch(console.error);
+});
+
+deleteCancelBtn.addEventListener("click", () => closeModal(deleteConfirmModal));
+
+// Close modal on click outside modal container
 document.querySelectorAll(".modal").forEach((modal) => {
   modal.addEventListener("mousedown", (evt) => {
     if (evt.target.classList.contains("modal")) closeModal(modal);
   });
 });
+
+// Close modal on any standard close button
+document.querySelectorAll(".modal__close-btn").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const modal = btn.closest(".modal");
+    if (modal) closeModal(modal);
+  });
+});
+
+const previewCloseBtn = previewModal.querySelector(
+  ".modal__close-btn_type_preview"
+);
+if (previewCloseBtn) {
+  previewCloseBtn.addEventListener("click", () => closeModal(previewModal));
+}
 
 // — Init on Page Load
 api
